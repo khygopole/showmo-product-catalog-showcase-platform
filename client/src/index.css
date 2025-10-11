@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+@keyframes slide-in-up {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-up {
+  animation: slide-in-up 0.5s ease-out;
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.5s ease-out;
+}
+
+html {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}

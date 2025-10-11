@@ -26,8 +26,9 @@ export default function Login() {
     >
       <div className="w-[800px] h-[550px] bg-black rounded-3xl flex">
         <img
-          className="w-1/2 h-auto object-center m-5 rounded-3xl border border-solid border-white md:block hidden"
+          className="w-1/2 h-auto object-center m-5 rounded-3xl border border-solid border-white md:block hidden slide-in-up"
           src={SideImageAuth}
+          alt="Side Auth"
         />
         <form className="flex flex-col w-full m-4">
           <img className="w-15 h-15 rounded-full mx-auto" src={ShowMoLogo} />

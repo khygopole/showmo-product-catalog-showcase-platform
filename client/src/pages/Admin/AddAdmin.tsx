@@ -9,7 +9,7 @@ export default function AddAdmin() {
     <main className="col-span-10 row-span-11 mx-auto my-auto">
       <div className="w-[800px] h-[550px] bg-[#6BCAF6] rounded-3xl flex slide-in-up">
         <img
-          className="w-1/2 h-auto object-center m-5 rounded-3xl border border-solid border-black md:block hidden slide-in-up"
+          className="w-[48%] h-auto object-center m-5 rounded-3xl border border-solid border-black md:block hidden slide-in-up"
           src={SideImageAuth}
         />
         <form className="flex flex-col w-full m-4">

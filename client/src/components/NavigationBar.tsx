@@ -1,5 +1,5 @@
 import ShowMoLogo from ".././assets/ShowMoLogo.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FiBook } from "react-icons/fi";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
@@ -9,18 +9,33 @@ import { IoPersonAddOutline } from "react-icons/io5";
 import { GrGroup } from "react-icons/gr";
 import { PiDotsThreeCircle } from "react-icons/pi";
 import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectRole } from "../features/auth/authSlice";
+import { useLogoutMutation } from "../features/auth/logoutSlice";
 
 export default function NavigationBar() {
-  // Dummy checking of role
-  const role: string = "admin";
+  const navigate = useNavigate();
+
+  const role = useSelector(selectRole);
+  const [logout] = useLogoutMutation();
 
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => setOpen(!open);
 
+  const handleLogout = async () => {
+    try {
+      const response = await logout().unwrap();
+
+      alert(response.message);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout Failed: ", error);
+    }
+  };
+
   useEffect(() => {
-    console.log("Rerenders nav");
     const handleClickOutsideNav = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setOpen(false);
@@ -221,9 +236,11 @@ export default function NavigationBar() {
             </>
           )}
         </ul>
-        <p className="mt-auto mb-4 text-center">{`${
-          role.charAt(0).toUpperCase() + role.slice(1)
-        } Portal View`}</p>
+        {role && (
+          <p className="mt-auto mb-4 text-center">{`${
+            role.charAt(0).toUpperCase() + role.slice(1)
+          } Portal View`}</p>
+        )}
       </nav>
       <header
         className="col-start-3 col-span-10 row-start-1 row-span-1 border-b border-[#003C5D] bg-[#6BCAF6] p-2"
@@ -260,7 +277,7 @@ export default function NavigationBar() {
                   Settings
                 </Link>
                 <button
-                  onClick={() => alert("Logging out")}
+                  onClick={handleLogout}
                   className="block w-full text-left px-4 py-2 hover:bg-[#6BCAF6] text-gray-700 hover:cursor-pointer"
                 >
                   Logout

@@ -19,50 +19,67 @@ import EditProduct from "./pages/Admin/EditProduct";
 import EditProfile from "./pages/Shared/EditProfile";
 import ChangePassword from "./pages/Shared/ChangePassword";
 import DeleteAccount from "./pages/Shared/DeleteAccount";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
+import NotFound from "./pages/NotFound";
+import Unauthorized from "./pages/Unauthorized";
+import Redirect from "./components/Redirect";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-
-      <Route path="/user" element={<Layout />}>
-        <Route path="dashboard">
-          <Route index element={<UserDashboard />} />
-          <Route path=":productId" element={<UserViewProduct />} />
-        </Route>
-        <Route path="profile">
-          <Route index element={<Profile />} />
-          <Route path="editProfile" element={<EditProfile />} />
-        </Route>
-        <Route path="favorites">
-          <Route index element={<Favorites />} />
-          <Route path=":productId" element={<UserViewProduct />} />
-        </Route>
-        <Route path="settings" element={<Settings />} />
+      <Route element={<Redirect />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Route>
-      <Route path="/admin" element={<Layout />}>
-        <Route path="dashboard">
-          <Route index element={<AdminDashboard />} />
-          <Route path=":productId" element={<AdminViewProduct />} />
-          <Route path="editProduct/:productId" element={<EditProduct />} />
-          <Route path="addProduct" element={<AddProduct />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="*" element={<NotFound />} />
+
+      <Route element={<ProtectedRoute allowedRole="user" />}>
+        <Route path="/user" element={<Layout />}>
+          <Route path="dashboard">
+            <Route index element={<UserDashboard />} />
+            <Route path=":productId" element={<UserViewProduct />} />
+          </Route>
+          <Route path="profile">
+            <Route index element={<Profile />} />
+            <Route path="editProfile" element={<EditProfile />} />
+          </Route>
+          <Route path="favorites">
+            <Route index element={<Favorites />} />
+            <Route path=":productId" element={<UserViewProduct />} />
+          </Route>
+          <Route path="settings">
+            <Route index element={<Settings />} />
+            <Route path="changePassword" element={<ChangePassword />} />
+            <Route path="deleteAccount" element={<DeleteAccount />} />
+          </Route>
         </Route>
-        <Route path="profile">
-          <Route index element={<Profile />} />
-          <Route path="editProfile" element={<EditProfile />} />
-        </Route>
-        <Route path="inventory">
-          <Route index element={<Inventory />} />
-          <Route path="editProduct/:productId" element={<EditProduct />} />
-        </Route>
-        <Route path="addAdmin" element={<AddAdmin />} />
-        <Route path="accounts" element={<Accounts />} />
-        <Route path="settings">
-          <Route index element={<Settings />} />
-          <Route path="changePassword" element={<ChangePassword />} />
-          <Route path="deleteAccount" element={<DeleteAccount />} />
+      </Route>
+
+      <Route element={<ProtectedRoute allowedRole="admin" />}>
+        <Route path="/admin" element={<Layout />}>
+          <Route path="dashboard">
+            <Route index element={<AdminDashboard />} />
+            <Route path=":productId" element={<AdminViewProduct />} />
+            <Route path="editProduct/:productId" element={<EditProduct />} />
+            <Route path="addProduct" element={<AddProduct />} />
+          </Route>
+          <Route path="profile">
+            <Route index element={<Profile />} />
+            <Route path="editProfile" element={<EditProfile />} />
+          </Route>
+          <Route path="inventory">
+            <Route index element={<Inventory />} />
+            <Route path="editProduct/:productId" element={<EditProduct />} />
+          </Route>
+          <Route path="addAdmin" element={<AddAdmin />} />
+          <Route path="accounts" element={<Accounts />} />
+          <Route path="settings">
+            <Route index element={<Settings />} />
+            <Route path="changePassword" element={<ChangePassword />} />
+            <Route path="deleteAccount" element={<DeleteAccount />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

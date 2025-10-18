@@ -1,16 +1,6 @@
 import { FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
-type Tproduct = {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-  description: string;
-  image: string;
-  favorites: number;
-  addedBy: string;
-};
+import type { Tproduct } from "./schema";
 
 export default function AdminProductCard({
   id,
@@ -21,6 +11,7 @@ export default function AdminProductCard({
   image,
   favorites,
   addedBy,
+  createdAt,
 }: Tproduct) {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {

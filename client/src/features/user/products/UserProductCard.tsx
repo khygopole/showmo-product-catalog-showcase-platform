@@ -1,16 +1,6 @@
 import { FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
-type Tproduct = {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-  description: string;
-  image: string;
-  favorites: number;
-  addedBy: string;
-};
+import type { Tproduct } from "../../admin/products/schema";
 
 export default function UserProductCard({
   id,

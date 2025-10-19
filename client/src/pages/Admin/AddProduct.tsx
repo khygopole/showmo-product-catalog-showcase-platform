@@ -2,7 +2,7 @@ import ImagePlaceholder from "../../assets/ImageDefault.png";
 import { FiUpload } from "react-icons/fi";
 import { MdOutlineCancel } from "react-icons/md";
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ZproductSchema,
   type TproductForm,
@@ -15,6 +15,7 @@ import Loading from "../../components/Loading";
 
 export default function AddProduct() {
   const [addProduct, { isLoading, isError }] = useAddProductMutation();
+  const navigate = useNavigate();
 
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -43,13 +44,14 @@ export default function AddProduct() {
         formData.append("image", data.image[0]); // Attach the first file only because we only asked one single image.
       }
 
-      const response = await addProduct(formData).unwrap();
+      await addProduct(formData).unwrap();
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
       alert("Added New Product Successfully");
       setPreview(null);
       reset();
+      navigate("/admin/dashboard");
     } catch (error) {
       console.error("Failed to add product: ", error);
     }

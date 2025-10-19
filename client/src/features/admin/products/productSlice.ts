@@ -1,25 +1,34 @@
 import { apiSlice } from "../../../app/api/apiSlice";
-import type { Tproduct } from "./schema";
-import { setAllProducts, addProduct } from "../../user/products/productSlice";
-// import { setAllProducts, addProduct, updateProduct, removeProduct } from "../../user/products/productSlice";
+import type { TnormalizedProduct, Tproduct } from "./schema";
+import { createEntityAdapter } from "@reduxjs/toolkit";
+
+export const productsAdapter = createEntityAdapter<Tproduct>({
+  sortComparer: (a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+});
+
+export const initialProductState = productsAdapter.getInitialState({
+  selectedProductId: null as string | null,
+});
 
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<Tproduct[], void>({
+    getProducts: builder.query<TnormalizedProduct, void>({
       query: () => ({
         url: "/product/getProducts",
         method: "GET",
         credentials: "include",
       }),
-      providesTags: ["Product"],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setAllProducts(data));
-        } catch (error) {
-          console.error("Fetching products failed", error);
-        }
+      transformResponse: (response: Tproduct[]) => {
+        return productsAdapter.setAll(initialProductState, response);
       },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.ids.map((id) => ({ type: "Product" as const, id })),
+              { type: "Product", id: "LIST" },
+            ]
+          : [{ type: "Product", id: "LIST" }],
     }),
     // getProductById: builder.query<Tproduct, string>({
     //   query: (id) => `/product/${id}`,
@@ -41,15 +50,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
           credentials: "include",
         };
       },
-      invalidatesTags: ["Product"],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(addProduct(data));
-        } catch (error) {
-          console.error("Adding product failed", error);
-        }
-      },
+      invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
     // updateProduct: builder.mutation<Tproduct, {id: string; formData: FormData}> ({
     //   query: ({id, formData}) => ({

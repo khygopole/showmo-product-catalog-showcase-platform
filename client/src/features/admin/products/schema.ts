@@ -1,3 +1,4 @@
+import type { EntityState } from "@reduxjs/toolkit";
 import { z } from "zod";
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -73,3 +74,5 @@ export type Tproduct = {
   addedBy: string;
   createdAt: Date;
 };
+
+export type TnormalizedProduct = EntityState<Tproduct, string>;

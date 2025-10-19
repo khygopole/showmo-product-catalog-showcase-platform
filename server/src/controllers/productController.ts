@@ -24,7 +24,7 @@ export const addProduct = async (req: Request, res: Response) => {
     const { name, description } = req.body;
     const price = Number(req.body.price);
     const stock = Number(req.body.stock);
-    const favorites = Number(req.body.stock);
+    const favorites = Number(req.body.favorites);
 
     const newProduct = await Product.create({
       name,

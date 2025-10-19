@@ -1,10 +1,4 @@
-import {
-  createApi,
-  fetchBaseQuery,
-  type BaseQueryFn,
-  type FetchArgs,
-  type FetchBaseQueryError,
-} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // import { logOut } from '../../features/auth/authSlice';
 // import type { RootState, AppDispatch } from "../store";
 // // Define the custom BaseQueryFn type signature for RTK Query
@@ -64,6 +58,6 @@ export const apiSlice = createApi({
     baseUrl: "http://localhost:3000",
     credentials: "include",
   }),
-  // tagTypes: ["User", "Product", "Account", "Other"],types for caching
+  tagTypes: ["User", "Product", "Account", "Other"], // types for caching
   endpoints: (builder) => ({}),
 });

@@ -1,10 +1,19 @@
+declare module "express" {
+  export interface Request {
+    user?: {
+      userId: string;
+      role: string;
+    };
+  }
+}
+
 import express from "express";
-import type { Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import { connectDatabase } from "./utils/db.js";
-import userRoutes from "./routes/userRoutes.js";
+import { connectDatabase } from "./utils/db";
+import userRoutes from "./routes/userRoutes";
+import productRoutes from "./routes/productRoutes";
 
 dotenv.config();
 const app = express();
@@ -14,6 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/auth", userRoutes);
+app.use("/product", productRoutes);
 
 const PORT = process.env.PORT || 3000;
 
